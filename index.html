@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Harshit Sharma | Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
+    body { background-color: #000; color: #fff; overflow-x: hidden; }
+
+    canvas#bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+
+    header { position: fixed; top: 0; left: 0; width: 100%; padding: 20px 60px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.6); z-index: 10; backdrop-filter: blur(10px); }
+    header h1 { font-size: 1.8rem; color: cyan; text-shadow: 0 0 10px cyan; }
+    nav a { color: white; text-decoration: none; margin-left: 25px; font-weight: 500; transition: 0.3s; display: inline-flex; align-items: center; }
+    nav a:hover { color: cyan; text-shadow: 0 0 8px cyan; }
+
+    section.hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; z-index: 10; position: relative; }
+    section.hero h2 { font-size: 3rem; margin-bottom: 10px; text-shadow: 0 0 30px white; animation: glow 2s infinite alternate; }
+    @keyframes glow { from { text-shadow: 0 0 15px white; } to { text-shadow: 0 0 35px cyan; } }
+    section.hero p { color: #ccc; font-size: 1.2rem; }
+
+    section { position: relative; z-index: 10; padding: 100px 60px; }
+    section h3 { font-size: 2rem; color: cyan; margin-bottom: 30px; text-shadow: 0 0 10px cyan; }
+    section p { font-size: 1.1rem; color: #ddd; line-height: 1.7; max-width: 800px; }
+
+    #uploads, #resume {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 80px 20px;
+    }
+
+    #uploads h3, #resume h3 {
+      font-size: 2rem;
+      color: cyan;
+      font-weight: 700;
+      margin-bottom: 25px;
+      text-shadow: 0 0 15px cyan;
+    }
+
+    .upload-box, .resume-box {
+      width: 70%;
+      max-width: 650px;
+      background: rgba(255,255,255,0.05);
+      border: 2px solid rgba(0,255,255,0.5);
+      border-radius: 20px;
+      padding: 50px 40px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0,255,255,0.15);
+      margin-bottom: 30px;
+    }
+
+    .upload-box:hover, .resume-box:hover {
+      background: rgba(0,255,255,0.1);
+      box-shadow: 0 0 25px cyan;
+      transform: scale(1.02);
+    }
+
+    .upload-box input { display: none; }
+
+    .upload-box::before, .resume-box::before {
+      content: "⬆";
+      font-size: 3rem;
+      color: cyan;
+      display: block;
+      margin-bottom: 15px;
+      text-shadow: 0 0 15px cyan;
+    }
+
+    .upload-box p, .resume-box p {
+      color: #eee;
+      font-size: 1.1rem;
+      margin: 0;
+    }
+
+    .upload-box small, .resume-box small {
+      display: block;
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+
+    .file-list {
+      margin-top: 25px;
+      width: 70%;
+      max-width: 650px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .file-item {
+      background: rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 12px 18px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 0 10px rgba(0,255,255,0.15);
+      transition: 0.3s;
+    }
+
+    .file-item:hover {
+      box-shadow: 0 0 18px cyan;
+      transform: translateY(-2px);
+    }
+
+    .file-item p {
+      margin: 0;
+      color: #fff;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .file-item a {
+      color: cyan;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .file-item a:hover {
+      text-decoration: underline;
+    }
+
+    .file-item button {
+      background: transparent;
+      border: none;
+      color: red;
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .file-item button:hover {
+      transform: scale(1.2);
+      color: #ff5555;
+    }
+
+    footer { text-align: center; padding: 30px; color: #aaa; background: rgba(0,0,0,0.6); font-size: 0.9rem; }
+
+    @media (max-width: 768px) {
+      header { flex-direction: column; padding: 15px; }
+      nav a { margin: 10px; }
+      section { padding: 80px 30px; }
+      section.hero h2 { font-size: 2.2rem; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg"></canvas>
+
+  <header>
+    <h1>Harshit Sharma</h1>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#resume">My Resume</a>
+      <a href="#uploads">Uploads</a>
+      <a href="#contact">Contact</a>
+      <!-- LinkedIn Icon Link -->
+      <a href="https://www.linkedin.com/in/harshit-sharma-729879229" target="_blank" title="My LinkedIn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="filter: invert(1);">
+          <path d="M4.98 3.5C3.34 3.5 2 4.84 2 6.48c0 1.63 1.34 2.97 2.98 2.97 1.64 0 2.98-1.34 2.98-2.97C7.96 4.84 6.62 3.5 4.98 3.5zM2.4 21.5H7.5V9H2.4v12.5zM9.8 21.5h5.1v-6.4c0-3.4 4.4-3.7 4.4 0v6.4h5.1v-7.8c0-6.7-7.2-6.5-9.1-3.2V9h-5.5c0 0 .1 12.5 0 12.5z"/>
+        </svg>
+      </a>
+    </nav>
+  </header>
+
+  <section class="hero" id="home">
+    <h2>Welcome to My Portfolio</h2>
+    <p>Hello, I am <strong>Harshit Sharma</strong>, a passionate data enthusiast.</p>
+  </section>
+
+  <section id="about">
+    <h3>About Me</h3>
+    <p>
+      Hey, I'm Harshit Sharma, and I just finished my Business Analytics degree.
+      I'm skilled in Python, SQL, Excel, and Power BI. I love using data to uncover insights
+      that help drive smarter decisions. I've worked with analytics, AI, and business intelligence,
+      and I’m all about creating meaningful, data-driven solutions.
+    </p>
+  </section>
+
+  <section id="resume">
+    <h3>My Resume</h3>
+    <div class="resume-box">
+      <p>📄 smartresume.docx</p>
+      <small>Click to download your resume</small>
+      <a href="smartresume.docx" download style="display:inline-block;margin-top:10px;color:cyan;font-weight:600;text-decoration:none;">Download</a>
+    </div>
+  </section>
+
+  <section id="uploads">
+    <h3>Uploads</h3>
+    <label class="upload-box" id="dropArea">
+      <input type="file" id="fileInput" multiple />
+      <p>📁 Click or Drop your Files (Any type)</p>
+      <small>Supports images, videos, PDF, DOC, PPT, XLS, etc.</small>
+    </label>
+    <div class="file-list" id="fileList"></div>
+  </section>
+
+  <section id="contact">
+    <h3>Contact</h3>
+    <p>
+      📞 Mobile: 7272000007<br>
+      📧 Email: <a href="mailto:Harshitsharma6400@gmail.com" style="color: cyan; text-decoration: none;">Harshitsharma6400@gmail.com</a><br>
+      🔗 LinkedIn: <a href="https://www.linkedin.com/in/harshit-sharma-729879229" target="_blank" style="color: cyan; text-decoration: none;">linkedin.com/in/harshit-sharma-729879229</a>
+    </p>
+  </section>
+
+  <footer>© 2025 Harshit Sharma | Portfolio</footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    // Existing 3D particles and file upload script (unchanged) …
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+    camera.position.z = 5;
+    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg'), alpha:true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    const particleCount = 400;
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount*3);
+    const velocities = new Float32Array(particleCount*3);
+    for(let i=0;i<particleCount;i++){
+      positions[i*3] = (Math.random()-0.5)*10;
+      positions[i*3+1] = (Math.random()-0.5)*10;
+      positions[i*3+2] = (Math.random()-0.5)*10;
+      velocities[i*3] = (Math.random()-0.5)*0.002;
+      velocities[i*3+1] = (Math.random()-0.5)*0.002;
+      velocities[i*3+2] = (Math.random()-0.5)*0.002;
+    }
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions,3));
+    const material = new THREE.PointsMaterial({ color:0x00ffff, size:0.03, transparent:true, opacity:0.8, blending:THREE.AdditiveBlending });
+    const particles = new THREE.Points(geometry, material);
+    scene.add(particles);
+
+    function animate(){
+      requestAnimationFrame(animate);
+      const pos = geometry.attributes.position.array;
+      for(let i=0;i<particleCount*3;i+=3){
+        pos[i]+=velocities[i]; pos[i+1]+=velocities[i+1]; pos[i+2]+=velocities[i+2];
+        if(pos[i]>5) pos[i]=-5; if(pos[i]<-5) pos[i]=5;
+        if(pos[i+1]>5) pos[i+1]=-5; if(pos[i+1]<-5) pos[i+1]=5;
+        if(pos[i+2]>5) pos[i+2]=-5; if(pos[i+2]<-5) pos[i+2]=5;
+      }
+      geometry.attributes.position.needsUpdate = true;
+      particles.rotation.y += 0.0008;
+      particles.rotation.x += 0.0005;
+      renderer.render(scene,camera);
+    }
+    animate();
+    window.addEventListener('resize',()=>{ camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
+
+    let db;
+    const request = indexedDB.open("PortfolioFilesDB", 1);
+    request.onupgradeneeded = e => { db = e.target.result; db.createObjectStore("files", { keyPath: "name" }); };
+    request.onsuccess = e => { db = e.target.result; loadFilesFromDB(); };
+    request.onerror = e => console.log("DB Error:", e);
+
+    const fileInput = document.getElementById('fileInput');
+    const fileList = document.getElementById('fileList');
+    const dropArea = document.getElementById('dropArea');
+
+    function addFileToDB(file){
+      const reader = new FileReader();
+      reader.onload = e => {
+        const transaction = db.transaction(["files"], "readwrite");
+        const store = transaction.objectStore("files");
+        store.put({ name: file.name, type: file.type, data: e.target.result });
+        transaction.oncomplete = () => loadFilesFromDB();
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function loadFilesFromDB(){
+      fileList.innerHTML = "";
+      const transaction = db.transaction(["files"], "readonly");
+      const store = transaction.objectStore("files");
+      store.openCursor().onsuccess = e => {
+        const cursor = e.target.result;
+        if(cursor){
+          const { name, type, data } = cursor.value;
+          const blob = new Blob([data], { type });
+          const url = URL.createObjectURL(blob);
+          const div = document.createElement("div");
+          div.className = "file-item";
+
+          if(type.startsWith("image/")){
+            const img = document.createElement("img"); img.src = url; img.style.maxWidth="100%"; img.style.borderRadius="8px"; div.appendChild(img);
+          } else if(type.startsWith("video/")){
+            const vid = document.createElement("video"); vid.src = url; vid.controls = true; vid.style.width="100%"; vid.style.borderRadius="8px"; div.appendChild(vid);
+          } else {
+            const icon = document.createElement("p"); icon.textContent = "📄 " + name; div.appendChild(icon);
+          }
+
+          const link = document.createElement("a"); link.href = url; link.download = name; link.textContent = "Download"; div.appendChild(link);
+
+          const delBtn = document.createElement("button"); delBtn.textContent = "Delete"; delBtn.onclick = () => deleteFile(name); div.appendChild(delBtn);
+
+          fileList.appendChild(div);
+          cursor.continue();
+        }
+      };
+    }
+
+    function deleteFile(name){
+      if(confirm("Are you sure you want to delete this file?")){
+        const transaction = db.transaction(["files"], "readwrite");
+        const store = transaction.objectStore("files");
+        store.delete(name).onsuccess = () => loadFilesFromDB();
+      }
+    }
+
+    fileInput.addEventListener("change", e => Array.from(e.target.files).forEach(file => addFileToDB(file)));
+    dropArea.addEventListener("dragover", e => { e.preventDefault(); dropArea.style.background="rgba(0,255,255,0.15)"; });
+    dropArea.addEventListener("dragleave", e => { dropArea.style.background="rgba(255,255,255,0.05)"; });
+    dropArea.addEventListener("drop", e => { e.preventDefault(); dropArea.style.background="rgba(255,255,255,0.05)"; Array.from(e.dataTransfer.files).forEach(file => addFileToDB(file)); });
+  </script>
+</body>
+</html>
+
+
